@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TestAPI.Models;
 
 namespace TestAPI
@@ -9,5 +9,7 @@ namespace TestAPI
         {
         }
         public DbSet<Blood> BloodGroup { get; set; }
+        public DbSet<WishBottle> WishBottles { get; set; }
+        public DbSet<CatchRecord> CatchRecords { get; set; }
     }
 }

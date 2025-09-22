@@ -1,0 +1,68 @@
+### Test Wish Bottle API
+
+### 1. Throw a Wish Bottle
+POST http://localhost:5122/api/bottles/throw
+Content-Type: application/json
+
+{
+  "message": "I wish for world peace and happiness for everyone! 🌍✨",
+  "userFingerprint": "user123"
+}
+
+###
+
+### 2. Throw another Wish Bottle (different user)
+POST http://localhost:5122/api/bottles/throw
+Content-Type: application/json
+
+{
+  "message": "May all dreams come true and love fill every heart! 💕",
+  "userFingerprint": "user456"
+}
+
+###
+
+### 3. Throw a third Wish Bottle
+POST http://localhost:5122/api/bottles/throw
+Content-Type: application/json
+
+{
+  "message": "Wishing for good health and prosperity for all families! 🏠💚"
+}
+
+###
+
+### 4. Catch a random Wish Bottle
+GET http://localhost:5122/api/bottles/catch
+
+###
+
+### 5. Catch a Wish Bottle (with user fingerprint to avoid own bottles)
+GET http://localhost:5122/api/bottles/catch?userFingerprint=user123
+
+###
+
+### 6. Catch a Wish Bottle (excluding specific bottle IDs)
+GET http://localhost:5122/api/bottles/catch?exclude=BOTTLE_ID_HERE&userFingerprint=user456
+
+###
+
+### 7. Test validation - Message too long (should fail)
+POST http://localhost:5122/api/bottles/throw
+Content-Type: application/json
+
+{
+  "message": "This is a very long message that exceeds the 256 character limit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  "userFingerprint": "user789"
+}
+
+###
+
+### 8. Test validation - Empty message (should fail)
+POST http://localhost:5122/api/bottles/throw
+Content-Type: application/json
+
+{
+  "message": "",
+  "userFingerprint": "user789"
+}

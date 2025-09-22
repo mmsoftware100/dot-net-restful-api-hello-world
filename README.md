@@ -10,4 +10,28 @@ password: {blank}
 
 
 - [x] Home Page added.
-- 
+
+
+Let's create Wish Bottle API
+
+that anyone (anonymous) can create a wish bottle.
+- [x] Wish Bottle API added.
+- [x] Wish Bottle Model added.
+- [x] Wish Bottle Controller added.
+
+Main CRUD Feature
+
+- [ ] create bottle (just plain text , 256 character or something)
+- [ ] get one random bottle per request
+
+
+## Deployment on ubnut
+
+
+CI CD? 
+
+on thank book server?
+
+
+Seeder ဘယ်လိုထည့်မလဲ?
+
