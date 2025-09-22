@@ -46,23 +46,9 @@ namespace TestAPI.Controllers
         }
 
         [HttpGet("catch")]
-        public async Task<IActionResult> CatchBottle([FromQuery] string? exclude, [FromQuery] string? userFingerprint)
+        public async Task<IActionResult> CatchBottle([FromQuery] string? userFingerprint)
         {
-            // Parse excluded bottle IDs
-            var excludedIds = new List<Guid>();
-            if (!string.IsNullOrEmpty(exclude))
-            {
-                var excludeArray = exclude.Split(',');
-                foreach (var id in excludeArray)
-                {
-                    if (Guid.TryParse(id.Trim(), out var guid))
-                    {
-                        excludedIds.Add(guid);
-                    }
-                }
-            }
-
-            // Get bottles that are not expired, not user's own, and not in excluded list
+            // Get bottles that are not expired and not user's own
             var query = _context.WishBottles
                 .Where(b => b.Status == BottleStatus.Active && 
                            b.ExpiresAt > DateTime.UtcNow);
@@ -71,12 +57,17 @@ namespace TestAPI.Controllers
             if (!string.IsNullOrEmpty(userFingerprint))
             {
                 query = query.Where(b => b.UserFingerprint != userFingerprint);
-            }
-
-            // Exclude specified bottles
-            if (excludedIds.Any())
-            {
-                query = query.Where(b => !excludedIds.Contains(b.Id));
+                
+                // Automatically exclude bottles already caught by this user
+                var caughtBottleIds = await _context.CatchRecords
+                    .Where(cr => cr.UserFingerprint == userFingerprint)
+                    .Select(cr => cr.BottleId)
+                    .ToListAsync();
+                
+                if (caughtBottleIds.Any())
+                {
+                    query = query.Where(b => !caughtBottleIds.Contains(b.Id));
+                }
             }
 
             // Get random bottle

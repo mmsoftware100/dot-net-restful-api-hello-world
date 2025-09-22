@@ -32,22 +32,27 @@ Content-Type: application/json
 
 ###
 
-### 4. Catch a random Wish Bottle
+### 4. Catch a random Wish Bottle (anonymous - no duplicate prevention)
 GET http://localhost:5122/api/bottles/catch
 
 ###
 
-### 5. Catch a Wish Bottle (with user fingerprint to avoid own bottles)
+### 5. Catch a Wish Bottle (with user fingerprint - automatically excludes own bottles and previously caught ones)
 GET http://localhost:5122/api/bottles/catch?userFingerprint=user123
 
 ###
 
-### 6. Catch a Wish Bottle (excluding specific bottle IDs)
-GET http://localhost:5122/api/bottles/catch?exclude=BOTTLE_ID_HERE&userFingerprint=user456
+### 6. Catch another Wish Bottle (same user - should get different bottle than previous catch)
+GET http://localhost:5122/api/bottles/catch?userFingerprint=user123
 
 ###
 
-### 7. Test validation - Message too long (should fail)
+### 7. Catch a Wish Bottle (different user - should exclude their own bottles and previously caught ones)
+GET http://localhost:5122/api/bottles/catch?userFingerprint=user456
+
+###
+
+### 8. Test validation - Message too long (should fail)
 POST http://localhost:5122/api/bottles/throw
 Content-Type: application/json
 
@@ -58,7 +63,7 @@ Content-Type: application/json
 
 ###
 
-### 8. Test validation - Empty message (should fail)
+### 9. Test validation - Empty message (should fail)
 POST http://localhost:5122/api/bottles/throw
 Content-Type: application/json
 
