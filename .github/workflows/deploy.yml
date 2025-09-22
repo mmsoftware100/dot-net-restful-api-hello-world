@@ -2,101 +2,99 @@ name: Deploy ASP.NET Core to Ubuntu Server
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test
-        run: dotnet test --no-build --verbosity normal --configuration Release
-
-      - name: Publish
-        run: dotnet publish --no-build --configuration Release --output ./publish
-
-      - name: Create deployment package
-        run: |
-          cd publish
-          tar -czf ../deployment.tar.gz *
-          cd ..
-
-      - name: Install sshpass
-        run: sudo apt-get update && sudo apt-get install -y sshpass
-
-      - name: Deploy to Ubuntu Server via password
-        env:
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-        run: |
-          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_HOST << 'EOF'
-            cd /var/www/html/aspdotnetapi
-
-            # Stop existing service if running
-            sudo systemctl stop aspdotnetapi || true
-
-            # Create deployment directory if missing
-            sudo mkdir -p /var/www/html/aspdotnetapi
-
-            # Backup current deployment
-            if [ -d "/var/www/html/aspdotnetapi/backup" ]; then
-              sudo rm -rf /var/www/html/aspdotnetapi/backup
-            fi
-            if [ -f "/var/www/html/aspdotnetapi/TestAPI.dll" ]; then
-              sudo mkdir -p /var/www/html/aspdotnetapi/backup
-              sudo cp -r /var/www/html/aspdotnetapi/* /var/www/html/aspdotnetapi/backup/ || true
-            fi
-
-            # Clean deployment folder
-            sudo rm -rf /var/www/html/aspdotnetapi/*
-          EOF
-
-      - name: Copy deployment package to server
-        env:
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-        run: |
-          sshpass -p "$SERVER_PASSWORD" scp -o StrictHostKeyChecking=no deployment.tar.gz $SERVER_USERNAME@$SERVER_HOST:/tmp/
-
-      - name: Extract and configure ASP.NET Core app
-        env:
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-        run: |
-          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_HOST << 'EOF'
-            cd /tmp
-
-            # Extract deployment package
-            sudo tar -xzf deployment.tar.gz -C /var/www/html/aspdotnetapi/
-            sudo chown -R www-data:www-data /var/www/html/aspdotnetapi
-            sudo chmod -R 755 /var/www/html/aspdotnetapi
-            sudo chmod +x /var/www/html/aspdotnetapi/TestAPI
-
-            # Create or update systemd service
-            sudo tee /etc/systemd/system/aspdotnetapi.service > /dev/null <<SERVICE_EOF
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --configuration Release
+    
+    - name: Publish
+      run: dotnet publish --no-build --configuration Release --output ./publish
+    
+    - name: Create deployment package
+      run: |
+        cd publish
+        tar -czf ../deployment.tar.gz *
+        cd ..
+    
+    - name: Deploy to Ubuntu Server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: 22
+        script: |
+          # Stop the application if running
+          sudo systemctl stop aspdotnetapi || true
+          
+          # Create application directory if it doesn't exist
+          sudo mkdir -p /var/www/html/aspdotnetapi
+          
+          # Backup current deployment (optional)
+          if [ -d "/var/www/html/aspdotnetapi/backup" ]; then
+            sudo rm -rf /var/www/html/aspdotnetapi/backup
+          fi
+          if [ -f "/var/www/html/aspdotnetapi/TestAPI.dll" ]; then
+            sudo mkdir -p /var/www/html/aspdotnetapi/backup
+            sudo cp -r /var/www/html/aspdotnetapi/* /var/www/html/aspdotnetapi/backup/ || true
+          fi
+          
+          # Clean current deployment
+          sudo rm -rf /var/www/html/aspdotnetapi/*
+    
+    - name: Copy files to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: 22
+        source: "deployment.tar.gz"
+        target: "/tmp/"
+    
+    - name: Extract and configure application
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        port: 22
+        script: |
+          # Extract deployment package
+          cd /tmp
+          sudo tar -xzf deployment.tar.gz -C /var/www/html/aspdotnetapi/
+          
+          # Set proper permissions
+          sudo chown -R www-data:www-data /var/www/html/aspdotnetapi
+          sudo chmod -R 755 /var/www/html/aspdotnetapi
+          sudo chmod +x /var/www/html/aspdotnetapi/TestAPI
+          
+          # Create or update systemd service
+          sudo tee /etc/systemd/system/aspdotnetapi.service > /dev/null <<EOF
           [Unit]
           Description=ASP.NET Core API Application
           After=network.target
-
+          
           [Service]
           Type=notify
           ExecStart=/usr/bin/dotnet /var/www/html/aspdotnetapi/TestAPI.dll
@@ -108,18 +106,21 @@ jobs:
           Environment=ASPNETCORE_ENVIRONMENT=Production
           Environment=ASPNETCORE_URLS=http://localhost:5001
           WorkingDirectory=/var/www/html/aspdotnetapi
-
+          
           [Install]
           WantedBy=multi-user.target
-          SERVICE_EOF
-
-            # Reload systemd and start service
-            sudo systemctl daemon-reload
-            sudo systemctl enable aspdotnetapi
-            sudo systemctl start aspdotnetapi
-            sleep 5
-            sudo systemctl status aspdotnetapi --no-pager
-
-            # Clean up
-            rm -f /tmp/deployment.tar.gz
           EOF
+          
+          # Reload systemd and start service
+          sudo systemctl daemon-reload
+          sudo systemctl enable aspdotnetapi
+          sudo systemctl start aspdotnetapi
+          
+          # Wait a moment for service to start
+          sleep 5
+          
+          # Check service status
+          sudo systemctl status aspdotnetapi --no-pager
+          
+          # Clean up
+          rm -f /tmp/deployment.tar.gz
