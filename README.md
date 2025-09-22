@@ -35,3 +35,16 @@ on thank book server?
 
 Seeder ဘယ်လိုထည့်မလဲ?
 
+dotnet run
+# Uses local MySQL database
+
+
+ASPNETCORE_ENVIRONMENT=Production dotnet run
+# Uses production MySQL database at 103.****
+
+
+dotnet run --launch-profile production 
+
+a little messy, but we get what we want.
+
+
