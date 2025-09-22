@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 mb-4">Welcome to TestAPI</h1>
+                <p class="lead mb-5">A powerful .NET Core Web API for managing blood group data</p>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-3">
+                                    <svg width="48" height="48" fill="currentColor" class="text-primary" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                        <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+                                </div>
+                                <h5 class="card-title">API Documentation</h5>
+                                <p class="card-text">Explore our comprehensive API documentation with interactive examples and detailed endpoint information.</p>
+                                <a href="/swagger" class="btn btn-custom">View Swagger Docs</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-3">
+                                    <svg width="48" height="48" fill="currentColor" class="text-danger" viewBox="0 0 16 16">
+                                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                    </svg>
+                                </div>
+                                <h5 class="card-title">Blood Group API</h5>
+                                <p class="card-text">Manage blood group data with full CRUD operations. Support for both English and Myanmar language names.</p>
+                                <a href="/api/Blood" class="btn btn-custom">View Blood API</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark">Available Endpoints</h5>
+                            <div class="row text-start">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled text-muted">
+                                        <li><strong>GET</strong> /api/Blood - Get all blood groups</li>
+                                        <li><strong>GET</strong> /api/Blood/{id} - Get blood group by ID</li>
+                                        <li><strong>POST</strong> /api/Blood - Create new blood group</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled text-muted">
+                                        <li><strong>PUT</strong> /api/Blood/{id} - Update blood group</li>
+                                        <li><strong>DELETE</strong> /api/Blood/{id} - Delete blood group</li>
+                                        <li><strong>GET</strong> /swagger - API Documentation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
