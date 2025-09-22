@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestAPI.Models;
 
@@ -58,7 +58,7 @@ namespace TestAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Blood blood)
         {
-            var updatedblood = ‌ေawait _context.BloodGroup.FindAsync(id);
+            var updatedblood = await _context.BloodGroup.FindAsync(id);
             if (updatedblood == null)
             {
                 return NotFound();

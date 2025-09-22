@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace TestAPI.Models
 {
@@ -6,7 +6,7 @@ namespace TestAPI.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name_English { get; set; }
-        public string Name_Myanmar { get; set; }
+        public required string Name_English { get; set; }
+        public required string Name_Myanmar { get; set; }
     }
 }
