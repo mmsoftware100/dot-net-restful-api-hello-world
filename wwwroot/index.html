@@ -449,30 +449,32 @@
             }
         });
 
-        // Generate unique browser fingerprint for anonymous identification
+        // Generate unique random ID for anonymous identification
         function generateUserFingerprint() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            ctx.textBaseline = 'top';
-            ctx.font = '14px Arial';
-            ctx.fillText('Wish Bottle Fingerprint', 2, 2);
-            
-            const fingerprint = [
-                navigator.userAgent,
-                navigator.language,
-                screen.width + 'x' + screen.height,
-                new Date().getTimezoneOffset(),
-                canvas.toDataURL()
-            ].join('|');
-            
-            userFingerprint = btoa(fingerprint).substring(0, 32);
-            
-            // Store in localStorage for consistency
-            if (!localStorage.getItem('userFingerprint')) {
-                localStorage.setItem('userFingerprint', userFingerprint);
-            } else {
-                userFingerprint = localStorage.getItem('userFingerprint');
+            // Check if we already have a stored fingerprint
+            const storedFingerprint = localStorage.getItem('userFingerprint');
+            if (storedFingerprint) {
+                userFingerprint = storedFingerprint;
+                return;
             }
+            
+            // Generate a new random unique ID
+            const randomBytes = new Uint8Array(16);
+            crypto.getRandomValues(randomBytes);
+            
+            // Convert to hex string
+            const hexString = Array.from(randomBytes)
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+            
+            // Add timestamp for extra uniqueness
+            const timestamp = Date.now().toString(36);
+            
+            // Combine and create final fingerprint
+            userFingerprint = (hexString + timestamp).substring(0, 32);
+            
+            // Store in localStorage for consistency across sessions
+            localStorage.setItem('userFingerprint', userFingerprint);
         }
 
         // Load user statistics
