@@ -79,12 +79,20 @@ else
     app.UseHttpsRedirection();
 }
 
+// Enable static files serving
+app.UseStaticFiles();
+
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+// Configure API routes
 app.MapControllers();
+
+// Configure MVC routes for any remaining controller actions
+app.MapControllerRoute(
+    name: "api",
+    pattern: "api/{controller}/{action=Index}/{id?}");
+
+// Fallback to serve React app for all other routes
+app.MapFallbackToFile("index.html");
 
 app.Run();

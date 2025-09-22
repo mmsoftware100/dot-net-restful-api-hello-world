@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wish Bottle React App</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 2rem;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        p {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .api-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .api-link {
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .api-link:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🍀</div>
+        <h1>Wish Bottle React App</h1>
+        <p>Welcome to the Wish Bottle application! This is your React frontend served by ASP.NET Core.</p>
+        
+        <div class="status">
+            <strong>✅ Static File Serving Configured</strong><br>
+            Your React app is now being served from the ASP.NET Core backend.
+        </div>
+        
+        <div class="api-links">
+            <a href="/api/bottles" class="api-link">View Bottles API</a>
+            <a href="/api/blood" class="api-link">Blood API</a>
+            <a href="/swagger" class="api-link">API Documentation</a>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 1rem; color: #888;">
+            To replace this with your React app, build your React project and copy the build files to the <code>wwwroot</code> directory.
+        </p>
+    </div>
+
+    <script>
+        // Simple script to test if JavaScript is working
+        console.log('🍀 Wish Bottle React App loaded successfully!');
+        
+        // You can add your React app's JavaScript here or link to external files
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, ready for React app initialization');
+        });
+    </script>
+</body>
+</html>
