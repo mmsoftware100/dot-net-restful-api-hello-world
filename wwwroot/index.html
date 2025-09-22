@@ -3,114 +3,756 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wish Bottle React App</title>
+    <title>🌊 Wish Bottle - Cast Your Dreams Into the Ocean</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-                sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
         }
-        
+
+        /* Ocean Animation Background */
+        .ocean {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #667eea 100%);
+            z-index: -2;
+        }
+
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="%23ffffff" fill-opacity="0.1"/></svg>') repeat-x;
+            animation: wave 10s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Container */
         .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
             text-align: center;
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 2rem;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
-        }
-        
-        p {
-            color: #666;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-        
-        .api-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-        
-        .api-link {
-            background: #667eea;
+            margin-bottom: 30px;
             color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: all 0.3s ease;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        /* Stats */
+        .stats {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Main Actions */
+        .action-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2a5298;
+            text-align: center;
+        }
+
+        /* Throw Bottle Section */
+        .wish-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 10px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .wish-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .throw-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .throw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .throw-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Catch Bottle Section */
+        .catch-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-bottom: 15px;
+        }
+
+        .catch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(42, 82, 152, 0.3);
+        }
+
+        .catch-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Found Bottle Display */
+        .found-bottle {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 2px solid rgba(255,255,255,0.2);
+            display: none;
+        }
+
+        .found-bottle.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bottle-message {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #333;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .bottle-info {
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        /* Reactions */
+        .reactions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .reaction-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .reaction-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Messages */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
             font-weight: 500;
         }
-        
-        .api-link:hover {
-            background: #5a6fd8;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.3);
         }
-        
-        .status {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #28a745;
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
         }
-        
-        .emoji {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+
+        .message.info {
+            background: rgba(33, 150, 243, 0.1);
+            color: #2196F3;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .action-section {
+                padding: 20px;
+            }
+        }
+
+        /* Floating Bottles Animation */
+        .floating-bottle {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: float 15s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="ocean"></div>
+    <div class="waves"></div>
+
     <div class="container">
-        <div class="emoji">🍀</div>
-        <h1>Wish Bottle React App</h1>
-        <p>Welcome to the Wish Bottle application! This is your React frontend served by ASP.NET Core.</p>
-        
-        <div class="status">
-            <strong>✅ Static File Serving Configured</strong><br>
-            Your React app is now being served from the ASP.NET Core backend.
+        <!-- Header -->
+        <div class="header">
+            <h1>🌊 Wish Bottle</h1>
+            <p>Cast your dreams into the endless ocean of possibilities</p>
         </div>
-        
-        <div class="api-links">
-            <a href="/api/bottles" class="api-link">View Bottles API</a>
-            <a href="/api/blood" class="api-link">Blood API</a>
-            <a href="/swagger" class="api-link">API Documentation</a>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number" id="bottlesThrown">0</span>
+                    <span class="stat-label">Bottles Thrown</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="bottlesCaught">0</span>
+                    <span class="stat-label">Bottles Caught</span>
+                </div>
+            </div>
         </div>
-        
-        <p style="margin-top: 2rem; font-size: 1rem; color: #888;">
-            To replace this with your React app, build your React project and copy the build files to the <code>wwwroot</code> directory.
-        </p>
+
+        <!-- Throw Bottle Section -->
+        <div class="action-section">
+            <div class="action-title">🍾 Throw a Wish Bottle</div>
+            <textarea 
+                class="wish-input" 
+                id="wishInput" 
+                placeholder="Write your wish, dream, or message to the world..."
+                maxlength="500"
+            ></textarea>
+            <div class="char-counter">
+                <span id="charCount">0</span>/500 characters
+            </div>
+            <button class="throw-btn" id="throwBtn">
+                <span id="throwBtnText">🌊 Cast Into Ocean</span>
+            </button>
+            <div id="throwMessage"></div>
+        </div>
+
+        <!-- Catch Bottle Section -->
+        <div class="action-section">
+            <div class="action-title">🎣 Catch a Floating Bottle</div>
+            <button class="catch-btn" id="catchBtn">
+                <span id="catchBtnText">🔍 Search the Ocean</span>
+            </button>
+            <div id="catchMessage"></div>
+            
+            <div class="found-bottle" id="foundBottle">
+                <div class="bottle-message" id="bottleMessage"></div>
+                <div class="bottle-info" id="bottleInfo"></div>
+                <div class="reactions">
+                    <button class="reaction-btn" onclick="reactToBottle('❤️')">❤️</button>
+                    <button class="reaction-btn" onclick="reactToBottle('🌟')">🌟</button>
+                    <button class="reaction-btn" onclick="reactToBottle('🤗')">🤗</button>
+                    <button class="reaction-btn" onclick="reactToBottle('🌈')">🌈</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Simple script to test if JavaScript is working
-        console.log('🍀 Wish Bottle React App loaded successfully!');
+        // Configuration
+        //const API_BASE_URL = 'https://localhost:7297/api'; // Update this to your actual API URL
+        const API_BASE_URL = 'https://api.thanks.com.mm/api'; // Update this to your actual API URL
         
-        // You can add your React app's JavaScript here or link to external files
+        // User identification using browser fingerprinting
+        let userFingerprint = '';
+        
+        // Statistics
+        let stats = {
+            bottlesThrown: 0,
+            bottlesCaught: 0
+        };
+
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, ready for React app initialization');
+            generateUserFingerprint();
+            loadStats();
+            setupEventListeners();
+            createFloatingBottles();
+            
+            // Welcome message for first-time users
+            if (!localStorage.getItem('hasVisited')) {
+                showMessage('info', 'Welcome to Wish Bottle! 🌊 Write your first wish and cast it into the ocean of dreams.');
+                localStorage.setItem('hasVisited', 'true');
+            }
         });
+
+        // Generate unique browser fingerprint for anonymous identification
+        function generateUserFingerprint() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillText('Wish Bottle Fingerprint', 2, 2);
+            
+            const fingerprint = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                new Date().getTimezoneOffset(),
+                canvas.toDataURL()
+            ].join('|');
+            
+            userFingerprint = btoa(fingerprint).substring(0, 32);
+            
+            // Store in localStorage for consistency
+            if (!localStorage.getItem('userFingerprint')) {
+                localStorage.setItem('userFingerprint', userFingerprint);
+            } else {
+                userFingerprint = localStorage.getItem('userFingerprint');
+            }
+        }
+
+        // Load user statistics
+        function loadStats() {
+            const savedStats = localStorage.getItem('wishBottleStats');
+            if (savedStats) {
+                stats = JSON.parse(savedStats);
+            }
+            updateStatsDisplay();
+        }
+
+        // Save user statistics
+        function saveStats() {
+            localStorage.setItem('wishBottleStats', JSON.stringify(stats));
+            updateStatsDisplay();
+        }
+
+        // Update statistics display
+        function updateStatsDisplay() {
+            document.getElementById('bottlesThrown').textContent = stats.bottlesThrown;
+            document.getElementById('bottlesCaught').textContent = stats.bottlesCaught;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const wishInput = document.getElementById('wishInput');
+            const throwBtn = document.getElementById('throwBtn');
+            const catchBtn = document.getElementById('catchBtn');
+            const charCount = document.getElementById('charCount');
+
+            // Character counter
+            wishInput.addEventListener('input', function() {
+                const count = this.value.length;
+                charCount.textContent = count;
+                
+                if (count > 450) {
+                    charCount.style.color = '#f44336';
+                } else if (count > 400) {
+                    charCount.style.color = '#ff9800';
+                } else {
+                    charCount.style.color = '#666';
+                }
+            });
+
+            // Throw bottle
+            throwBtn.addEventListener('click', throwBottle);
+            
+            // Catch bottle
+            catchBtn.addEventListener('click', catchBottle);
+
+            // Enter key to throw bottle
+            wishInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                    throwBottle();
+                }
+            });
+        }
+
+        // Throw bottle function
+        async function throwBottle() {
+            const wishInput = document.getElementById('wishInput');
+            const throwBtn = document.getElementById('throwBtn');
+            const throwBtnText = document.getElementById('throwBtnText');
+            const throwMessage = document.getElementById('throwMessage');
+            
+            const message = wishInput.value.trim();
+            
+            if (!message) {
+                showMessage('error', 'Please write a wish before throwing your bottle! 💭', 'throwMessage');
+                return;
+            }
+
+            // Disable button and show loading
+            throwBtn.disabled = true;
+            throwBtnText.innerHTML = '<span class="loading"></span> Casting into ocean...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/Bottles/throw`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        userFingerprint: userFingerprint
+                    })
+                });
+
+                if (response.ok) {
+                    // Success
+                    wishInput.value = '';
+                    document.getElementById('charCount').textContent = '0';
+                    stats.bottlesThrown++;
+                    saveStats();
+                    
+                    showMessage('success', '🌊 Your wish bottle has been cast into the ocean! May it find someone who needs to hear it.', 'throwMessage');
+                    
+                    // Create floating bottle animation
+                    createFloatingBottle();
+                    
+                } else {
+                    throw new Error('Failed to throw bottle');
+                }
+            } catch (error) {
+                console.error('Error throwing bottle:', error);
+                showMessage('error', 'The ocean waves are too strong right now. Please try again! 🌊', 'throwMessage');
+            } finally {
+                // Re-enable button
+                throwBtn.disabled = false;
+                throwBtnText.textContent = '🌊 Cast Into Ocean';
+            }
+        }
+
+        // Catch bottle function
+        async function catchBottle() {
+            const catchBtn = document.getElementById('catchBtn');
+            const catchBtnText = document.getElementById('catchBtnText');
+            const catchMessage = document.getElementById('catchMessage');
+            const foundBottle = document.getElementById('foundBottle');
+            
+            // Hide previous bottle
+            foundBottle.classList.remove('show');
+            
+            // Disable button and show loading
+            catchBtn.disabled = true;
+            catchBtnText.innerHTML = '<span class="loading"></span> Searching ocean...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/Bottles/catch?userFingerprint=${encodeURIComponent(userFingerprint)}`);
+                
+                if (response.ok) {
+                    const bottle = await response.json();
+                    
+                    if (bottle && bottle.message) {
+                        // Display found bottle
+                        document.getElementById('bottleMessage').textContent = bottle.message;
+                        document.getElementById('bottleInfo').textContent = `Found floating in the digital ocean • Cast ${getTimeAgo(bottle.createdAt)}`;
+                        
+                        foundBottle.classList.add('show');
+                        stats.bottlesCaught++;
+                        saveStats();
+                        
+                        showMessage('success', '🍾 You found a message in a bottle! Someone\'s wish has reached you.', 'catchMessage');
+                    } else {
+                        showMessage('info', '🌊 The ocean is calm right now. No bottles are floating nearby. Try again later!', 'catchMessage');
+                    }
+                } else {
+                    throw new Error('Failed to catch bottle');
+                }
+            } catch (error) {
+                console.error('Error catching bottle:', error);
+                showMessage('error', 'The ocean currents are unpredictable right now. Please try again! 🌊', 'catchMessage');
+            } finally {
+                // Re-enable button
+                catchBtn.disabled = false;
+                catchBtnText.textContent = '🔍 Search the Ocean';
+            }
+        }
+
+        // React to bottle
+        function reactToBottle(emoji) {
+            // Visual feedback
+            const reactionBtns = document.querySelectorAll('.reaction-btn');
+            reactionBtns.forEach(btn => {
+                if (btn.textContent === emoji) {
+                    btn.style.transform = 'scale(1.3)';
+                    btn.style.background = 'rgba(255,255,255,0.5)';
+                    setTimeout(() => {
+                        btn.style.transform = 'scale(1)';
+                        btn.style.background = 'rgba(255,255,255,0.2)';
+                    }, 200);
+                }
+            });
+            
+            // Show reaction message
+            showMessage('success', `You reacted with ${emoji}! Your kindness ripples across the ocean.`, 'catchMessage');
+        }
+
+        // Utility function to show messages
+        function showMessage(type, text, containerId = null) {
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            
+            const container = containerId ? document.getElementById(containerId) : document.body;
+            
+            // Clear previous messages in the container
+            if (containerId) {
+                const existingMessages = container.querySelectorAll('.message');
+                existingMessages.forEach(msg => msg.remove());
+            }
+            
+            container.appendChild(message);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (message.parentNode) {
+                    message.remove();
+                }
+            }, 5000);
+        }
+
+        // Create floating bottle animations
+        function createFloatingBottles() {
+            setInterval(() => {
+                if (Math.random() < 0.3) { // 30% chance every interval
+                    createFloatingBottle();
+                }
+            }, 3000);
+        }
+
+        function createFloatingBottle() {
+            const bottle = document.createElement('div');
+            bottle.className = 'floating-bottle';
+            bottle.textContent = '🍾';
+            bottle.style.left = Math.random() * 100 + '%';
+            bottle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            
+            document.body.appendChild(bottle);
+            
+            // Remove after animation
+            setTimeout(() => {
+                if (bottle.parentNode) {
+                    bottle.remove();
+                }
+            }, 20000);
+        }
+
+        // Utility function for time formatting
+        function getTimeAgo(dateString) {
+            if (!dateString) return 'recently';
+            
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+            
+            if (diffMins < 1) return 'just now';
+            if (diffMins < 60) return `${diffMins} minutes ago`;
+            if (diffHours < 24) return `${diffHours} hours ago`;
+            if (diffDays < 7) return `${diffDays} days ago`;
+            return 'a while ago';
+        }
+
+        // Add some magic touches
+        document.addEventListener('click', function(e) {
+            // Create ripple effect on clicks
+            const ripple = document.createElement('div');
+            ripple.style.position = 'fixed';
+            ripple.style.left = e.clientX + 'px';
+            ripple.style.top = e.clientY + 'px';
+            ripple.style.width = '10px';
+            ripple.style.height = '10px';
+            ripple.style.background = 'rgba(255,255,255,0.5)';
+            ripple.style.borderRadius = '50%';
+            ripple.style.transform = 'translate(-50%, -50%)';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+            ripple.style.pointerEvents = 'none';
+            ripple.style.zIndex = '1000';
+            
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: translate(-50%, -50%) scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
