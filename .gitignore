@@ -1,0 +1,76 @@
+# .NET / Visual Studio
+# ==================================
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio 2019/2022 cache/options
+.vs/
+.vscode/
+# ReSharper is a control freak
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# ==================================
+# Project / Runtime files
+# ==================================
+# Local configuration files
+appsettings.Development.json
+secrets.json
+*.Secret.json
+
+# Local database files
+*.mdf
+*.ldf
+
+# Test results
+TestResults/
+*.trx
+
+# Tooling
+.store/
+project.fragment.lock.json
+
+# Packages
+# This is for the old packages.config format.
+# With PackageReference, the packages folder isn't used.
+packages/
+*.nupkg
+
+# ==================================
+# OS-generated files
+# ==================================
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.[Cc]ache
+Desktop.ini
