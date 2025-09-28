@@ -48,3 +48,6 @@ dotnet run --launch-profile production
 a little messy, but we get what we want.
 
 
+
+
+<!-- Security scan triggered at 2025-09-28 15:30:51 -->
