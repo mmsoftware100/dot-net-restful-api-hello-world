@@ -23,6 +23,10 @@ dotnet run
 docker build -t testapi .
 docker run -d -p 8080:8080 --name mytestapi testapi
 
+docker rm -f mytestapi
+
+
+
 ###  check logs
 docker logs -f mytestapi
 
