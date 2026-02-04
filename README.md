@@ -1,6 +1,12 @@
 # RESTFul API Hello World .NET 8
 
 
+## Deploy
+
+```bash
+gcloud init
+gcloud run deploy template-asp-dot-net --source .
+```
 ## Development Setup
 
 ```bash
