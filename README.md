@@ -8,10 +8,7 @@
 dotnet tool install --global dotnet-ef
 
 # migrate
-
 dotnet ef database update
-
-
 
 dotnet run
 
