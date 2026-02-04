@@ -18,6 +18,14 @@ dotnet run
 ```
 
 
+## Docker
+
+docker build -t testapi .
+docker run -d -p 8080:8080 --name mytestapi testapi
+
+###  check logs
+docker logs -f mytestapi
+
 ## Production Deployment
 
 
