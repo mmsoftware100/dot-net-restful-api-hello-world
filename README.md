@@ -1,5 +1,29 @@
 # RESTFul API Hello World .NET 8
 
+
+## Development Setup
+
+```bash
+# install entity framework tool
+dotnet tool install --global dotnet-ef
+
+# migrate
+
+dotnet ef database update
+
+
+
+dotnet run
+
+#info: Microsoft.Hosting.Lifetime[14]
+#      Now listening on: http://localhost:5122
+
+```
+
+
+## Production Deployment
+
+
 Connect with mysql database
 
 host: localhost
