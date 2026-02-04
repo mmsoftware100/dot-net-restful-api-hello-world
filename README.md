@@ -10,6 +10,7 @@ dotnet tool install --global dotnet-ef
 # migrate
 dotnet ef database update
 
+# start the project
 dotnet run
 
 #info: Microsoft.Hosting.Lifetime[14]
